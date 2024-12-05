@@ -14,8 +14,8 @@ to match your desired configuration. For example, to create a VPC with 3 public
 and private subnets, you could use the following configuration:
 
 ```hcl
-module "cloudfront_waf" {
-  source = "github.com/codeforamerica/tofu-modules/aws/vpc"
+module "vpc" {
+  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.0.0"
 
   project        = "my-project"
   environment    = "dev"
