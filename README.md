@@ -1,5 +1,7 @@
 # AWS VPC Module
 
+[![Main Checks][badge-checks]][code-checks] [![GitHub Release][badge-release]][latest-release]
+
 This module sets up a standard VPC with public and private subnets, NAT
 gateway(s), service endpoints, and routing.
 
@@ -83,3 +85,8 @@ peers = {
 | public_subnets              | List of public subnet ids.               | `list`   |
 | public_subnets_cidr_blocks  | List of public subnet CIDRs.             | `list`   |
 | vpc_id                      | Id of the created VPC.                   | `string` |
+
+[badge-checks]: https://github.com/codeforamerica/tofu-modules-aws-vpc/actions/workflows/main.yaml/badge.svg
+[badge-release]: https://img.shields.io/github/v/release/codeforamerica/tofu-modules-aws-vpc?logo=github&label=Latest%20Release
+[code-checks]: https://github.com/codeforamerica/tofu-modules-aws-vpc/actions/workflows/main.yaml
+[latest-release]: https://github.com/codeforamerica/tofu-modules-aws-vpc/releases/latest
