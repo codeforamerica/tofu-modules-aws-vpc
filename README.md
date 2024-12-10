@@ -5,7 +5,7 @@
 This module sets up a standard VPC with public and private subnets, NAT
 gateway(s), service endpoints, and routing.
 
-Creates endpoints for the following services: EC2, S3, SSM
+Creates endpoints for the following services: EC2, GuardDuty, S3, SSM
 
 ## Usage
 
@@ -15,7 +15,7 @@ and private subnets, you could use the following configuration:
 
 ```hcl
 module "vpc" {
-  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.0.0"
+  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.1.0"
 
   project        = "my-project"
   environment    = "dev"

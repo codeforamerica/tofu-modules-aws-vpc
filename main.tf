@@ -171,6 +171,12 @@ module "endpoints" {
       subnet_ids          = module.vpc.private_subnets
       private_dns_enabled = true
     },
+    guardduty = {
+      service             = "guardduty-data"
+      tags                = { Name = "${local.prefix}-guardduty" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
   }
 
   tags = var.tags
