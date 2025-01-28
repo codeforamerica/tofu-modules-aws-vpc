@@ -143,37 +143,61 @@ module "endpoints" {
 
   vpc_id = module.vpc.vpc_id
   endpoints = {
-    s3 = {
-      service = "s3"
-      tags    = { Name = "${local.prefix}-s3" }
-    },
-    ssm = {
-      service             = "ssm"
-      tags                = { Name = "${local.prefix}-ssm" }
-      subnet_ids          = module.vpc.private_subnets
-      private_dns_enabled = true
-    },
-    ssmmessages = {
-      service             = "ssmmessages"
-      tags                = { Name = "${local.prefix}-ssmmessages" }
-      subnet_ids          = module.vpc.private_subnets
-      private_dns_enabled = true
-    },
     ec2 = {
       service             = "ec2"
       tags                = { Name = "${local.prefix}-ec2" }
       subnet_ids          = module.vpc.private_subnets
       private_dns_enabled = true
-    },
+    }
     ec2messages = {
       service             = "ec2messages"
       tags                = { Name = "${local.prefix}-ec2messages" }
       subnet_ids          = module.vpc.private_subnets
       private_dns_enabled = true
-    },
+    }
+    ecrapi = {
+      service             = "ecr.api"
+      tags                = { Name = "${local.prefix}-ecrapi" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
+    ecrdkr = {
+      service             = "ecr.dkr"
+      tags                = { Name = "${local.prefix}-ecrdrk" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
     guardduty = {
       service             = "guardduty-data"
       tags                = { Name = "${local.prefix}-guardduty" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
+    s3 = {
+      service = "s3"
+      tags    = { Name = "${local.prefix}-s3" }
+    }
+    ssm = {
+      service             = "ssm"
+      tags                = { Name = "${local.prefix}-ssm" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
+    ssmcontacts = {
+      service             = "ssm-contacts"
+      tags                = { Name = "${local.prefix}-ssmcontacts" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
+    ssmincidents = {
+      service             = "ssm-incidents"
+      tags                = { Name = "${local.prefix}-ssmincidents" }
+      subnet_ids          = module.vpc.private_subnets
+      private_dns_enabled = true
+    }
+    ssmmessages = {
+      service             = "ssmmessages"
+      tags                = { Name = "${local.prefix}-ssmmessages" }
       subnet_ids          = module.vpc.private_subnets
       private_dns_enabled = true
     }
