@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.1.1 (2025-02-28)
+
+### Fix
+
+- Add new VPC endpoints to satisfy Security Hub. (DEV-109) (#7)
+
 ## 1.1.0 (2024-12-10)
 
 ### Feat
