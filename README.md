@@ -15,7 +15,7 @@ and private subnets, you could use the following configuration:
 
 ```hcl
 module "vpc" {
-  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.1.0"
+  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.1.1"
 
   project        = "my-project"
   environment    = "dev"
@@ -76,15 +76,15 @@ peers = {
 
 ## Outputs
 
-| Name                        | Description                              | Type     |
-|-----------------------------|------------------------------------------|----------|
-| availability_zones          | List of availability zones with subnets. | `list`   |
-| peer_ids                    | Ids of any created peering connections.  | `list`   |
-| private_subnets             | List of private subnet ids.              | `list`   |
-| private_subnets_cidr_blocks | List of private subnet CIDRs.            | `list`   |
-| public_subnets              | List of public subnet ids.               | `list`   |
-| public_subnets_cidr_blocks  | List of public subnet CIDRs.             | `list`   |
-| vpc_id                      | Id of the created VPC.                   | `string` |
+| Name                        | Description                             | Type     |
+|-----------------------------|-----------------------------------------|----------|
+| availability_zones          | The availability zones in which the VPC subnets are created. | `list`   |
+| peer_ids                    | The IDs of any created VPC peering connections. | `list`   |
+| private_subnets             | The IDs of the private subnets in the VPC.             | `list`   |
+| private_subnets_cidr_blocks | The CIDR blocks of the private subnets in the VPC.           | `list`   |
+| public_subnets              | The IDs of the public subnets in the VPC.               | `list`   |
+| public_subnets_cidr_blocks  | The CIDR blocks of the public subnets in the VPC.            | `list`   |
+| vpc_id                      | The ID of the VPC.                  | `string` |
 
 [badge-checks]: https://github.com/codeforamerica/tofu-modules-aws-vpc/actions/workflows/main.yaml/badge.svg
 [badge-release]: https://img.shields.io/github/v/release/codeforamerica/tofu-modules-aws-vpc?logo=github&label=Latest%20Release
