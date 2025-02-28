@@ -5,7 +5,7 @@
 This module sets up a standard VPC with public and private subnets, NAT
 gateway(s), service endpoints, and routing.
 
-Creates endpoints for the following services: EC2, GuardDuty, S3, SSM
+Creates endpoints for the following services: EC2, ECR, GuardDuty, S3, and SSM
 
 ## Usage
 

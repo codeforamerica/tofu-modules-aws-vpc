@@ -2,6 +2,27 @@ locals {
   azs    = data.aws_availability_zones.available.names
   prefix = "${var.project}-${var.environment}"
 
+  # Define the set of services that require interface endpoints.
+  interface_endpoint_services = toset([
+    "ec2",
+    "ec2messages",
+    "ecr.api",
+    "ecr.dkr",
+    "guardduty-data",
+    "ssm",
+    "ssm-contacts",
+    "ssm-incidents",
+    "ssmmessages"
+  ])
+  interface_endpoints = {
+    for service in local.interface_endpoint_services : service => {
+      service = service
+      tags    = { Name = "${local.prefix}-${service}" }
+      subnet_ids = data.aws_subnets.endpoints[service].ids
+      private_dns_enabled = true
+    }
+  }
+
   # Define inbound and outbound ACL rules for any peering connections.
   peer_inbound_acls = [
     for peer in var.peers : {
