@@ -24,6 +24,11 @@ module "vpc" {
   enable_flow_log                                 = true
   flow_log_cloudwatch_log_group_kms_key_id        = var.logging_key_id
   flow_log_cloudwatch_log_group_retention_in_days = var.log_retention_period
+  flow_log_cloudwatch_log_group_name_prefix       = "/${var.project}/${var.environment}/"
+
+  # The log format will only have one $, the other is used to escape HCL's
+  # string interpolation.
+  flow_log_log_format = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${pkt-srcaddr} $${pkt-dstaddr}"
 
   private_outbound_acl_rules = concat(
     [

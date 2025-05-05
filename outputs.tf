@@ -3,6 +3,11 @@ output "availability_zones" {
   description = "The availability zones in which the VPC subnets are created."
 }
 
+output "cloudwatch_log_group" {
+  value = module.vpc.vpc_flow_log_destination_arn
+  description = "Log group created for VPC flow logs."
+}
+
 output "peer_ids" {
   value = [for peer in aws_vpc_peering_connection.peer : peer.id]
   description = "The IDs of any created VPC peering connections."
