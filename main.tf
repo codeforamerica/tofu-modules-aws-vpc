@@ -3,8 +3,7 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.8"
-  # TODO: Support more dynamic az count.
-  azs = slice(local.azs, 0, 3)
+  azs = slice(local.azs, 0, local.az_count)
 
   name = local.prefix
   cidr = var.cidr

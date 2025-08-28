@@ -2,6 +2,13 @@ locals {
   azs    = data.aws_availability_zones.available.names
   prefix = "${var.project}-${var.environment}"
 
+  # If the number of subnets exceeds the number of availability zones, don't
+  # attempt to use more availability zones than exist.
+  az_count = min(
+    length(local.azs),
+    max(length(var.private_subnets), length(var.public_subnets))
+  )
+
   # Define the set of services that require interface endpoints.
   interface_endpoint_services = toset([
     "ec2",
