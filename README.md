@@ -23,7 +23,7 @@ module "vpc" {
   logging_key_id = module.logging.kms_key_arn
 
   private_subnets = ["10.0.22.0/26", "10.0.22.64/26", "10.0.22.128/26"]
-  public_subnets  = ["10.0.20.0/26", "10.0.20.64/26", "10.0.20.128/26"]
+  public_subnets = ["10.0.20.0/26", "10.0.20.64/26", "10.0.20.128/26"]
 }
 ```
 
@@ -71,22 +71,26 @@ peers = {
 | log_retention_period | Retention period for flow logs, in days.                                                                    | `string` | 30      | no       |
 | environment          | Environment for the project.                                                                                | `string` | `"dev"` | no       |
 | peers                | List of VPC peering connections.                                                                            | `map`    | `{}`    | no       |
+| enable_nat_gateway   | Whether to include any NAT gateways.                                                                        | `bool`   | `true`  | no       |
 | single_nat_gateway   | Create a single NAT gateway, rather than 1 in each private subnet. **_Cheaper, but not highly available._** | `bool`   | `false` | no       |
 | tags                 | Optional tags to be applied to all resources.                                                               | `list`   | `[]`    | no       |
 
 ## Outputs
 
-| Name                        | Description                             | Type     |
-|-----------------------------|-----------------------------------------|----------|
+| Name                        | Description                                                  | Type     |
+|-----------------------------|--------------------------------------------------------------|----------|
 | availability_zones          | The availability zones in which the VPC subnets are created. | `list`   |
-| peer_ids                    | The IDs of any created VPC peering connections. | `list`   |
-| private_subnets             | The IDs of the private subnets in the VPC.             | `list`   |
+| peer_ids                    | The IDs of any created VPC peering connections.              | `list`   |
+| private_subnets             | The IDs of the private subnets in the VPC.                   | `list`   |
 | private_subnets_cidr_blocks | The CIDR blocks of the private subnets in the VPC.           | `list`   |
-| public_subnets              | The IDs of the public subnets in the VPC.               | `list`   |
+| public_subnets              | The IDs of the public subnets in the VPC.                    | `list`   |
 | public_subnets_cidr_blocks  | The CIDR blocks of the public subnets in the VPC.            | `list`   |
-| vpc_id                      | The ID of the VPC.                  | `string` |
+| vpc_id                      | The ID of the VPC.                                           | `string` |
 
 [badge-checks]: https://github.com/codeforamerica/tofu-modules-aws-vpc/actions/workflows/main.yaml/badge.svg
+
 [badge-release]: https://img.shields.io/github/v/release/codeforamerica/tofu-modules-aws-vpc?logo=github&label=Latest%20Release
+
 [code-checks]: https://github.com/codeforamerica/tofu-modules-aws-vpc/actions/workflows/main.yaml
+
 [latest-release]: https://github.com/codeforamerica/tofu-modules-aws-vpc/releases/latest

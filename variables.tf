@@ -47,6 +47,12 @@ variable "public_subnets" {
   description = "List of public subnet CIDR blocks."
 }
 
+variable "enable_nat_gateway" {
+  type        = bool
+  default     = true
+  description = "Whether to include any NAT gateways."
+}
+
 variable "single_nat_gateway" {
   type        = bool
   default     = false
