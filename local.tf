@@ -10,17 +10,7 @@ locals {
   )
 
   # Define the set of services that require interface endpoints.
-  interface_endpoint_services = toset([
-    "ec2",
-    "ec2messages",
-    "ecr.api",
-    "ecr.dkr",
-    "guardduty-data",
-    "ssm",
-    "ssm-contacts",
-    "ssm-incidents",
-    "ssmmessages"
-  ])
+  interface_endpoint_services = var.interface_endpoint_services
   interface_endpoints = {
     for service in local.interface_endpoint_services : service => {
       service = service

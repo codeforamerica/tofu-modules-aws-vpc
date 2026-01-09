@@ -61,19 +61,20 @@ peers = {
 
 ## Inputs
 
-| Name                 | Description                                                                                                 | Type     | Default | Required |
-|----------------------|-------------------------------------------------------------------------------------------------------------|----------|---------|----------|
-| cidr                 | IPv4 CIDR block for the VPC.                                                                                | `string` | n/a     | yes      |
-| logging_key_id       | KMS key to use for log encryption.                                                                          | `string` | n/a     | yes      |
-| private_subnets      | List of private subnet CIDR blocks.                                                                         | `list`   | n/a     | yes      |
-| project              | Name of the project.                                                                                        | `string` | n/a     | yes      |
-| public_subnets       | List of public subnet CIDR blocks.                                                                          | `list`   | n/a     | yes      |
-| log_retention_period | Retention period for flow logs, in days.                                                                    | `string` | 30      | no       |
-| environment          | Environment for the project.                                                                                | `string` | `"dev"` | no       |
-| peers                | List of VPC peering connections.                                                                            | `map`    | `{}`    | no       |
-| enable_nat_gateway   | Whether to include any NAT gateways.                                                                        | `bool`   | `true`  | no       |
-| single_nat_gateway   | Create a single NAT gateway, rather than 1 in each private subnet. **_Cheaper, but not highly available._** | `bool`   | `false` | no       |
-| tags                 | Optional tags to be applied to all resources.                                                               | `list`   | `[]`    | no       |
+| Name                        | Description                                                                                                 | Type     | Default                                                                                                              | Required |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------|----------|----------------------------------------------------------------------------------------------------------------------|----------|
+| cidr                        | IPv4 CIDR block for the VPC.                                                                                | `string` | n/a                                                                                                                  | yes      |
+| logging_key_id              | KMS key to use for log encryption.                                                                          | `string` | n/a                                                                                                                  | yes      |
+| private_subnets             | List of private subnet CIDR blocks.                                                                         | `list`   | n/a                                                                                                                  | yes      |
+| project                     | Name of the project.                                                                                        | `string` | n/a                                                                                                                  | yes      |
+| public_subnets              | List of public subnet CIDR blocks.                                                                          | `list`   | n/a                                                                                                                  | yes      |
+| log_retention_period        | Retention period for flow logs, in days.                                                                    | `string` | 30                                                                                                                   | no       |
+| environment                 | Environment for the project.                                                                                | `string` | `"dev"`                                                                                                              | no       |
+| peers                       | List of VPC peering connections.                                                                            | `map`    | `{}`                                                                                                                 | no       |
+| interface_endpoint_services | List of AWS services to create interface VPC endpoints for.                                                 | `list`   | ["ec2", "ec2messages", "ecr.api", "ecr.dkr", "guardduty-data", "ssm", "ssm-contacts", "ssm-incidents","ssmmessages"] | no       |
+| enable_nat_gateway          | Whether to include any NAT gateways.                                                                        | `bool`   | `true`                                                                                                               | no       |
+| single_nat_gateway          | Create a single NAT gateway, rather than 1 in each private subnet. **_Cheaper, but not highly available._** | `bool`   | `false`                                                                                                              | no       |
+| tags                        | Optional tags to be applied to all resources.                                                               | `list`   | `[]`                                                                                                                 | no       |
 
 ## Outputs
 
