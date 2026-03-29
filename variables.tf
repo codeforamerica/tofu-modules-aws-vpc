@@ -32,6 +32,22 @@ variable "peers" {
   default     = {}
 }
 
+variable "interface_endpoint_services" {
+  type        = set(string)
+  description = "AWS services to create interface VPC endpoints for."
+  default = [
+    "ec2",
+    "ec2messages",
+    "ecr.api",
+    "ecr.dkr",
+    "guardduty-data",
+    "ssm",
+    "ssm-contacts",
+    "ssm-incidents",
+    "ssmmessages"
+  ]
+}
+
 variable "private_subnets" {
   type        = list(string)
   description = "List of private subnet CIDR blocks."
@@ -45,6 +61,12 @@ variable "project" {
 variable "public_subnets" {
   type        = list(string)
   description = "List of public subnet CIDR blocks."
+}
+
+variable "enable_nat_gateway" {
+  type        = bool
+  default     = true
+  description = "Whether to include any NAT gateways."
 }
 
 variable "single_nat_gateway" {
