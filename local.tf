@@ -9,23 +9,38 @@ locals {
     max(length(var.private_subnets), length(var.public_subnets))
   )
 
+  gateway_endpoint_services = setunion(
+    toset(["s3"]),
+    var.additional_gateway_endpoints
+  )
+  gateway_endpoints = {
+    for service in local.gateway_endpoint_services : service => {
+      service      = service
+      service_type = "Gateway"
+      tags         = { Name = "${local.prefix}-${service}" }
+    }
+  }
+
   # Define the set of services that require interface endpoints.
-  interface_endpoint_services = toset([
-    "ec2",
-    "ec2messages",
-    "ecr.api",
-    "ecr.dkr",
-    "guardduty-data",
-    "ssm",
-    "ssm-contacts",
-    "ssm-incidents",
-    "ssmmessages"
-  ])
+  interface_endpoint_services = setunion(
+    toset([
+      "ec2",
+      "ec2messages",
+      "ecr.api",
+      "ecr.dkr",
+      "guardduty-data",
+      "ssm",
+      "ssm-contacts",
+      "ssm-incidents",
+      "ssmmessages"
+    ]),
+    var.additional_interface_endpoints
+  )
   interface_endpoints = {
     for service in local.interface_endpoint_services : service => {
-      service = service
-      tags    = { Name = "${local.prefix}-${service}" }
-      subnet_ids = data.aws_subnets.endpoints[service].ids
+      service             = service
+      tags                = { Name = "${local.prefix}-${service}" }
+      subnet_ids          = data.aws_subnets.endpoints[service].ids
       private_dns_enabled = true
     }
   }

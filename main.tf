@@ -3,7 +3,7 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.8"
-  azs = slice(local.azs, 0, local.az_count)
+  azs     = slice(local.azs, 0, local.az_count)
 
   name = local.prefix
   cidr = var.cidr
@@ -140,13 +140,8 @@ module "endpoints" {
     }
   }
 
-  vpc_id = module.vpc.vpc_id
-  endpoints = merge({
-    s3 = {
-      service = "s3"
-      tags    = { Name = "${local.prefix}-s3" }
-    }
-  }, local.interface_endpoints)
+  vpc_id    = module.vpc.vpc_id
+  endpoints = merge(local.gateway_endpoints, local.interface_endpoints)
 
   tags = var.tags
 }
