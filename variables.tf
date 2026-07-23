@@ -1,3 +1,19 @@
+variable "additional_gateway_endpoints" {
+  type        = set(string)
+  description = <<-EOT
+    Gateway endpoint service names to create in addition to the s3 default.
+    EOT
+  default     = []
+}
+
+variable "additional_interface_endpoints" {
+  type        = set(string)
+  description = <<-EOT
+    Interface endpoint service names to create in addition to the defaults
+    EOT
+  default     = []
+}
+
 variable "cidr" {
   type        = string
   description = "IPv4 CIDR block for the VPC."
