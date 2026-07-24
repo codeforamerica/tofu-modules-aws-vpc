@@ -15,9 +15,10 @@ locals {
   )
   gateway_endpoints = {
     for service in local.gateway_endpoint_services : service => {
-      service      = service
-      service_type = "Gateway"
-      tags         = { Name = "${local.prefix}-${service}" }
+      service         = service
+      service_type    = "Gateway"
+      route_table_ids = module.vpc.private_route_table_ids
+      tags            = { Name = "${local.prefix}-${service}" }
     }
   }
 
