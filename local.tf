@@ -68,19 +68,17 @@ locals {
     }
   ]
 
-  # Create a set of peering routes based on the provided peers and the created
-  # private route tables.
-  peer_cidrs = [
-    for key, value in var.peers : {
-      key  = key
-      cidr = value.cidr
+  private_route_table_indexes = range(length(module.vpc.private_route_table_ids))
+
+  # Create a route for each peer in each private route table. The keys are
+  # built from the peer name and the route table's position in the list, since
+  # the route table IDs themselves aren't known until the VPC has been created.
+  peer_routes = {
+    for pair in setproduct(keys(var.peers), local.private_route_table_indexes) :
+    "${pair[0]}-${pair[1]}" => {
+      cidr        = var.peers[pair[0]].cidr
+      peer        = pair[0]
+      table_index = pair[1]
     }
-  ]
-  peer_routes = [
-    for pair in setproduct(local.peer_cidrs, module.vpc.private_route_table_ids) : {
-      cidr     = pair[0].cidr
-      key      = pair[0].key
-      table_id = pair[1]
-    }
-  ]
+  }
 }

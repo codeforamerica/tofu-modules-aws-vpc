@@ -10,11 +10,9 @@ resource "aws_vpc_peering_connection" "peer" {
 }
 
 resource "aws_route" "peer" {
-  for_each = {
-    for route in local.peer_routes : "${route.key}-${route.table_id}" => route
-  }
+  for_each = local.peer_routes
 
-  route_table_id            = each.value.table_id
+  route_table_id            = module.vpc.private_route_table_ids[each.value.table_index]
   destination_cidr_block    = each.value.cidr
-  vpc_peering_connection_id = aws_vpc_peering_connection.peer[each.value.key].id
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer[each.value.peer].id
 }

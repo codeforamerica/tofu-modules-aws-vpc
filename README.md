@@ -59,6 +59,30 @@ peers = {
 }
 ```
 
+#### Upgrading peered VPCs to 2.0.0
+
+Version 2.0.0 changed the `for_each` key on `aws_route.peer` from
+`"<peer>-<route-table-id>"` to `"<peer>-<route-table-index>"`, so that a new
+deployment can plan before its route tables exist. If you already have `peers`
+configured, move the state entries before the first plan against 2.0.0.
+
+```bash
+tofu init
+./scripts/migrate-peer-route-keys.py        # review the commands
+./scripts/migrate-peer-route-keys.py | sh   # run them
+tofu plan                                   # should report no changes
+```
+
+The script only reads state and prints `tofu state mv` commands, so it is safe
+to run first and look at the output. Pass `--binary terraform` if the
+configuration runs on Terraform.
+
+Skipping the move does not simply drop the routes for the length of the apply.
+OpenTofu places no ordering edge between the old and new instances, so the
+creates start before the destroys finish, and the AWS provider rejects a
+`CreateRoute` while a route for that destination is still present. Losing that
+race leaves the apply errored with the old routes already deleted.
+
 ### Endpoints
 
 By default, this module creates the following VPC endpoints:
