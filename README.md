@@ -15,7 +15,7 @@ and private subnets, you could use the following configuration:
 
 ```hcl
 module "vpc" {
-  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.1.1"
+  source = "github.com/codeforamerica/tofu-modules-aws-vpc?ref=1.2.1"
 
   project        = "my-project"
   environment    = "dev"
