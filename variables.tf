@@ -66,6 +66,116 @@ variable "public_subnets" {
   description = "List of public subnet CIDR blocks."
 }
 
+variable "resource_endpoints" {
+  type = map(object({
+    resource_configuration_arn = string
+    ports                      = set(number)
+    cidrs                      = optional(list(string), [])
+    security_group_ids         = optional(list(string), [])
+    private_dns                = optional(bool, true)
+  }))
+
+  description = <<-EOT
+    VPC Lattice resource endpoints to create, keyed by name. Ingress to each
+    endpoint is allowed only on the listed ports from the listed CIDRs and
+    security groups. Private DNS requires that the resource configuration has a
+    verified custom domain name; disable it if it doesn't.
+    EOT
+  default     = {}
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : length(endpoint.ports) > 0
+    ])
+    error_message = "Each resource endpoint must allow at least one port."
+  }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) :
+      length(endpoint.cidrs) + length(endpoint.security_group_ids) > 0
+    ])
+    error_message = "Each resource endpoint must allow at least one CIDR or security group."
+  }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : alltrue([
+        for cidr in endpoint.cidrs : can(cidrhost(cidr, 0))
+      ])
+    ])
+    error_message = "Each resource endpoint CIDR must be a valid IPv4 or IPv6 CIDR block."
+  }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : alltrue([
+        for id in endpoint.security_group_ids : id != null
+      ])
+    ])
+    error_message = "Resource endpoint security group IDs can't be null."
+  }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : (
+        length(distinct(endpoint.cidrs)) == length(endpoint.cidrs) &&
+        length(distinct(endpoint.security_group_ids)) == length(endpoint.security_group_ids)
+      )
+    ])
+    error_message = "Resource endpoint CIDRs and security group IDs must not contain duplicates."
+  }
+}
+
+variable "resource_gateway" {
+  type = object({
+    ports                  = set(number)
+    cidrs                  = list(string)
+    ip_address_type        = optional(string, "IPV4")
+    ipv4_addresses_per_eni = optional(number)
+  })
+
+  description = <<-EOT
+    Create a VPC Lattice resource gateway in the private subnets. Egress from
+    the gateway is limited to the given ports and CIDRs. Disabled when `null`.
+    EOT
+  default     = null
+
+  validation {
+    condition     = var.resource_gateway == null || length(var.resource_gateway.ports) > 0
+    error_message = "The resource gateway must allow at least one port."
+  }
+
+  validation {
+    condition     = var.resource_gateway == null || length(var.resource_gateway.cidrs) > 0
+    error_message = "The resource gateway must allow at least one CIDR."
+  }
+
+  validation {
+    condition = var.resource_gateway == null || (
+      alltrue([for cidr in var.resource_gateway.cidrs : can(cidrhost(cidr, 0))]) &&
+      length(distinct(var.resource_gateway.cidrs)) == length(var.resource_gateway.cidrs)
+    )
+    error_message = "The resource gateway CIDRs must be valid, unique IPv4 or IPv6 CIDR blocks."
+  }
+
+  validation {
+    condition = var.resource_gateway == null || contains(
+      ["IPV4", "IPV6", "DUALSTACK"], var.resource_gateway.ip_address_type
+    )
+    error_message = "The resource gateway's ip_address_type must be IPV4, IPV6, or DUALSTACK."
+  }
+
+  validation {
+    condition = (
+      var.resource_gateway == null ||
+      var.resource_gateway.ipv4_addresses_per_eni == null ||
+      var.resource_gateway.ip_address_type != "IPV6"
+    )
+    error_message = "The resource gateway's ipv4_addresses_per_eni can't be set when ip_address_type is IPV6."
+  }
+}
+
 variable "single_nat_gateway" {
   type        = bool
   default     = false
