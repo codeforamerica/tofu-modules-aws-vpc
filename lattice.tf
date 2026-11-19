@@ -5,7 +5,7 @@ resource "aws_security_group" "resource_gateway" {
   description = "Controls traffic leaving the VPC Lattice resource gateway."
   vpc_id      = module.vpc.vpc_id
 
-  tags = merge(var.tags, { Name = "${local.prefix}-resource-gateway" })
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -44,7 +44,7 @@ resource "aws_security_group" "resource_endpoint" {
   description = "Controls access to the ${each.key} resource endpoint."
   vpc_id      = module.vpc.vpc_id
 
-  tags = merge(var.tags, { Name = "${local.prefix}-${each.key}" })
+  tags = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -74,5 +74,5 @@ resource "aws_vpc_endpoint" "resource" {
   security_group_ids         = [aws_security_group.resource_endpoint[each.key].id]
   private_dns_enabled        = each.value.private_dns
 
-  tags = merge(var.tags, { Name = "${local.prefix}-${each.key}" })
+  tags = var.tags
 }

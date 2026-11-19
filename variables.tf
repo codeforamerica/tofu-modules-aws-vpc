@@ -94,6 +94,34 @@ variable "resource_endpoints" {
     ])
     error_message = "Each resource endpoint must allow at least one CIDR or security group."
   }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : alltrue([
+        for cidr in endpoint.cidrs : can(cidrhost(cidr, 0))
+      ])
+    ])
+    error_message = "Each resource endpoint CIDR must be a valid IPv4 or IPv6 CIDR block."
+  }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : alltrue([
+        for id in endpoint.security_group_ids : id != null
+      ])
+    ])
+    error_message = "Resource endpoint security group IDs can't be null."
+  }
+
+  validation {
+    condition = alltrue([
+      for endpoint in values(var.resource_endpoints) : (
+        length(distinct(endpoint.cidrs)) == length(endpoint.cidrs) &&
+        length(distinct(endpoint.security_group_ids)) == length(endpoint.security_group_ids)
+      )
+    ])
+    error_message = "Resource endpoint CIDRs and security group IDs must not contain duplicates."
+  }
 }
 
 variable "resource_gateway" {
@@ -118,6 +146,14 @@ variable "resource_gateway" {
   validation {
     condition     = var.resource_gateway == null || length(var.resource_gateway.cidrs) > 0
     error_message = "The resource gateway must allow at least one CIDR."
+  }
+
+  validation {
+    condition = var.resource_gateway == null || (
+      alltrue([for cidr in var.resource_gateway.cidrs : can(cidrhost(cidr, 0))]) &&
+      length(distinct(var.resource_gateway.cidrs)) == length(var.resource_gateway.cidrs)
+    )
+    error_message = "The resource gateway CIDRs must be valid, unique IPv4 or IPv6 CIDR blocks."
   }
 
   validation {

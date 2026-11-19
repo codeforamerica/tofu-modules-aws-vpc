@@ -151,7 +151,7 @@ Leave the value `null` to disable.
 | Name                   | Description                                                                                                                  | Type     | Default  | Required |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | -------- |
 | ports                  | TCP ports to which egress from the gateway is allowed.                                                                       | `set`    | n/a      | yes      |
-| cidrs                  | CIDR blocks to which egress from the gateway is allowed.                                                                     | `set`    | n/a      | yes      |
+| cidrs                  | CIDR blocks to which egress from the gateway is allowed.                                                                     | `list`   | n/a      | yes      |
 | ip_address_type        | IP address type used by the gateway (`IPV4`, `IPV6`, or `DUALSTACK`).                                                        | `string` | `"IPV4"` | no       |
 | ipv4_addresses_per_eni | Number of IPv4 addresses assigned to each of the gateway's elastic network interfaces. Leave `null` to use Amazon's default. | `number` | `null`   | no       |
 
