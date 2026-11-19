@@ -59,6 +59,24 @@ peers = {
 }
 ```
 
+By default, each peer's NACL rules allow all ports and protocols from the
+peer's CIDR. To narrow that down, pass `from_port`, `to_port`, and/or
+`protocol`:
+
+```hcl
+peers = {
+  aptible = {
+    account_id = "123456789012",
+    vpc_id     = "vpc-012ab34cde5678fa9",
+    region     = "us-east-1",
+    cidr       = "10.123.0.0/16",
+    from_port  = 5432,
+    to_port    = 5432,
+    protocol   = 6
+  }
+}
+```
+
 ### Endpoints
 
 By default, this module creates the following VPC endpoints:

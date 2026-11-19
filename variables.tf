@@ -42,6 +42,9 @@ variable "peers" {
     cidr       = string
     region     = string
     vpc_id     = string
+    from_port  = optional(number, 0)
+    to_port    = optional(number, 0)
+    protocol   = optional(number, -1)
   }))
 
   description = "List of VPC peering connections."
