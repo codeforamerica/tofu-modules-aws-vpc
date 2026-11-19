@@ -46,25 +46,26 @@ locals {
     }
   }
 
-  # Define inbound and outbound ACL rules for any peering connections.
+  # Define inbound and outbound ACL rules for any peering connections. Rule
+  # numbers are offset by index so multiple peers don't collide.
   peer_inbound_acls = [
-    for peer in var.peers : {
+    for index, peer in values(var.peers) : {
       action      = "allow"
       cidr_block  = peer.cidr
-      from_port   = 0
-      protocol    = -1
-      rule_number = 200
-      to_port     = 0
+      from_port   = peer.from_port
+      protocol    = peer.protocol
+      rule_number = 200 + index
+      to_port     = peer.to_port
     }
   ]
   peer_outbound_acls = [
-    for peer in var.peers : {
+    for index, peer in values(var.peers) : {
       action      = "allow"
       cidr_block  = peer.cidr
-      from_port   = 0
-      protocol    = -1
-      rule_number = 200
-      to_port     = 0
+      from_port   = peer.from_port
+      protocol    = peer.protocol
+      rule_number = 200 + index
+      to_port     = peer.to_port
     }
   ]
 
