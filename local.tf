@@ -83,4 +83,38 @@ locals {
       table_id = pair[1]
     }
   ]
+
+  # Build the egress rules for the resource gateway.
+  resource_gateway_rules = var.resource_gateway == null ? {} : {
+    for rule in setproduct(range(length(var.resource_gateway.cidrs)), var.resource_gateway.ports) :
+    "${rule[0]}:${rule[1]}" => {
+      cidr = var.resource_gateway.cidrs[rule[0]]
+      port = rule[1]
+    }
+  }
+
+  # Flatten the allowed CIDRs, security groups, and ports for each resource
+  # endpoint into a map of ingress rules.
+  resource_endpoint_rules = merge([
+    for name, endpoint in var.resource_endpoints : merge(
+      {
+        for rule in setproduct(range(length(endpoint.cidrs)), endpoint.ports) :
+        "${name}/cidr/${rule[0]}:${rule[1]}" => {
+          endpoint          = name
+          cidr              = endpoint.cidrs[rule[0]]
+          security_group_id = null
+          port              = rule[1]
+        }
+      },
+      {
+        for rule in setproduct(range(length(endpoint.security_group_ids)), endpoint.ports) :
+        "${name}/sg/${rule[0]}:${rule[1]}" => {
+          endpoint          = name
+          cidr              = null
+          security_group_id = endpoint.security_group_ids[rule[0]]
+          port              = rule[1]
+        }
+      }
+    )
+  ]...)
 }
