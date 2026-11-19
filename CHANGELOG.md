@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.2.2 (2026-11-19)
+
+### Fix
+
+- avoid colliding NACL rule numbers for multiple VPC peers (DEV-421) (#20)
+- avoid colliding NACL rule numbers for multiple VPC peers
+
 ## 1.2.1 (2026-07-24)
 
 ### Fix
