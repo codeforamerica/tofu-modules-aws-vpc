@@ -30,6 +30,7 @@ locals {
       "ecr.api",
       "ecr.dkr",
       "guardduty-data",
+      "secretsmanager",
       "ssm",
       "ssm-contacts",
       "ssm-incidents",
