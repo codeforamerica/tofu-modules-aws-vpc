@@ -82,8 +82,8 @@ peers = {
 By default, this module creates the following VPC endpoints:
 
 - **Gateway:** S3
-- **Interface:** ec2, ec2messages, ecr.api, ecr.dkr, guardduty-data, ssm,
-  ssm-contacts, ssm-incidents, ssmmessages
+- **Interface:** ec2, ec2messages, ecr.api, ecr.dkr, guardduty-data,
+  secretsmanager, ssm, ssm-contacts, ssm-incidents, ssmmessages
 
 To add additional endpoints, you can use the `additional_gateway_endpoints` and
 `additional_interface_endpoints` inputs.
